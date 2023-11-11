@@ -1,0 +1,15 @@
+# Assembly specification
+
+- This a custom assemby language created for the chip-8 rom.
+- This repo includes a custom assembler written in rust
+
+## Registers
+
+> Registers from V0 to VF are referenced by their name **[rv0-rvf]**
+
+> I register by **irg**
+
+> Delay timer and Sound timer by **rdt** and **rst** respectively
+
+### Operations
+
