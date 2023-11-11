@@ -13,3 +13,4 @@
 
 ### Operations
 
+mov - Specify data to be loaded into a register can be an literal or from another register

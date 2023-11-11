@@ -1,6 +1,4 @@
-mod parser;
 mod instructions;
+mod parser;
 
-fn main() {
-
-}
+fn main() {}
