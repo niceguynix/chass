@@ -1,4 +1,5 @@
-enum Register {
+#[derive(Debug)]
+pub enum Register {
     V0,
     V1,
     V2,
@@ -19,11 +20,20 @@ enum Register {
     I,
 }
 
-enum Data {
+#[derive(Debug)]
+pub enum Data {
     Reg(Register),
-    Int(i8),
+    Int(u8),
 }
 
-enum Ops {
-    Move(Register,Data),
+#[derive(Debug)]
+pub enum Ops {
+    Move(Register, Data),
+    Draw(Register, Register, u8),
+}
+
+#[derive(Debug)]
+pub enum Assembly {
+    Instruction(Ops),
+    Label(&'static str),
 }
