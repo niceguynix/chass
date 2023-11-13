@@ -148,8 +148,9 @@ impl Linker {
                     panic!("Duplicate Label found");
                 }
                 lables.insert(label, start_addr + addr);
+            }else{
+                addr += 2;
             }
-            addr += 4;
         }
         self.label_addr = lables;
     }
