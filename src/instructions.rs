@@ -31,6 +31,7 @@ pub enum Data {
 pub enum Ops {
     Move(Register, Data),
     Draw(Register, Register, u8),
+    Jump(&'static str),
 }
 
 #[derive(Debug)]

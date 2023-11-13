@@ -1,6 +1,7 @@
+use crate::instructions::{Assembly, Data, Ops, Register};
 use std::collections::{HashMap, HashSet};
 
-use crate::instructions::{Assembly, Data, Ops, Register};
+const start_addr: i32 = 0x200;
 
 #[derive(Debug)]
 pub struct Linker {
@@ -21,20 +22,32 @@ impl Linker {
     pub fn link(&mut self) {
         for i in self.ops.iter() {
             match i {
-                Assembly::Instruction(op) => self.m_code.push(Self::covert_to_code(op)),
+                Assembly::Instruction(op) => self.m_code.push(self.covert_to_code(op)),
                 _ => (),
             }
         }
     }
 
-    fn covert_to_code(asm: &Ops) -> u16 {
+    fn covert_to_code(&self, asm: &Ops) -> u16 {
         let c = match asm {
             Ops::Move(reg, data) => Self::encode_move(reg, data),
             Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, l),
+            Ops::Jump(label) => self.encode_jump(label),
             _ => panic!("??"),
         };
 
         Self::convert(c)
+    }
+
+    fn encode_jump(&self, label: &str) -> [u8; 4] {
+        let addr = self.label_addr.get(label).expect("Not a balid label");
+        let i = *addr;
+        [
+            1,
+            ((i & 0xF00) >> 8) as u8,
+            ((i & 0xF0) >> 4) as u8,
+            (i & 0xF) as u8,
+        ]
     }
 
     fn encode_draw(r1: &Register, r2: &Register, i: &u8) -> [u8; 4] {
@@ -134,7 +147,7 @@ impl Linker {
                 if lables.contains_key(label) {
                     panic!("Duplicate Label found");
                 }
-                lables.insert(label, addr);
+                lables.insert(label, start_addr + addr);
             }
             addr += 4;
         }

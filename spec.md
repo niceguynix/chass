@@ -16,3 +16,5 @@
 mov - Specify data to be loaded into a register can be an literal or from another register.
 
 draw - sprite to be drawn.
+
+jump - jump to the specified address

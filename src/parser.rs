@@ -50,7 +50,7 @@ impl Parser {
         };
 
         let asm = match token {
-            label if label.starts_with(':') => Assembly::Label(&label[1..label.len()]),
+            label if label.starts_with(':') => Assembly::Label(&label[1..]),
             "mov" => Assembly::Instruction(instructions::Ops::Move(
                 self.get_register(),
                 self.get_data(),
@@ -60,10 +60,20 @@ impl Parser {
                 self.get_register(),
                 self.get_literal(),
             )),
+            "jump" => Assembly::Instruction(instructions::Ops::Jump(self.get_label())),
+
             _ => panic!("unrecogninzed instruction"),
         };
 
         Some(asm)
+    }
+
+    fn get_label(&mut self) -> &'static str {
+        let label = self.get_next_token().expect("Need a lable");
+        if !label.starts_with('.') {
+            panic!("Not a valid label");
+        }
+        &label[1..]
     }
 
     pub fn load_instructions(&mut self) {
