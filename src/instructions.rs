@@ -14,6 +14,7 @@ pub enum Register {
     VB,
     VC,
     VD,
+    VE,
     VF,
     Dt,
     St,

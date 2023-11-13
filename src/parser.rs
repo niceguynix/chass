@@ -4,7 +4,7 @@ use crate::instructions::{self, Assembly, Data, Register};
 pub struct Parser {
     data: &'static str,
     p: usize,
-    ops: Vec<Assembly>,
+    pub ops: Vec<Assembly>,
 }
 
 impl Parser {
@@ -88,6 +88,7 @@ impl Parser {
             "rvb" => Register::VB,
             "rvc" => Register::VC,
             "rvd" => Register::VD,
+            "rve" => Register::VE,
             "rvf" => Register::VF,
             "irg" => Register::I,
             "rdt" => Register::Dt,
@@ -101,26 +102,28 @@ impl Parser {
         token.parse().ok()
     }
 
-    fn get_data(&mut self)->Data {
-        let token = self.get_next_token().expect("Needed a register or integer here");
+    fn get_data(&mut self) -> Data {
+        let token = self
+            .get_next_token()
+            .expect("Needed a register or integer here");
 
-        if let Some(reg)=self.to_register(token){
+        if let Some(reg) = self.to_register(token) {
             return Data::Reg(reg);
         }
 
-        if let Some(literal)=self.to_literal(token){
+        if let Some(literal) = self.to_literal(token) {
             return Data::Int(literal);
         }
 
         panic!("Not a valid register or literal");
     }
 
-    fn get_register(&mut self)->Register{
-        let token=self.get_next_token().expect("Needed a register");
+    fn get_register(&mut self) -> Register {
+        let token = self.get_next_token().expect("Needed a register");
         self.to_register(token).expect("Not a register")
     }
-    fn get_literal(&mut self)->u8{
-        let token=self.get_next_token().expect("Needed a integer");
+    fn get_literal(&mut self) -> u8 {
+        let token = self.get_next_token().expect("Needed a integer");
         self.to_literal(token).expect("Not a integer")
     }
 }

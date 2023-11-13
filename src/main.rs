@@ -2,7 +2,10 @@ use std::env::args;
 use std::fs;
 use std::process::exit;
 
+use crate::linker::Linker;
+
 mod instructions;
+mod linker;
 mod parser;
 
 fn main() {
@@ -28,5 +31,11 @@ fn main() {
 
     println!("Afer");
     p.load_instructions();
-    println!("{:#?}", p);
+    // println!("{:#?}", p);
+
+    let mut l = Linker::new(p.ops);
+    l.link();
+    let c = l.get_code();
+
+    fs::write("./test.rom", c).expect("Writing unsucessful");
 }
