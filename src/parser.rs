@@ -50,7 +50,7 @@ impl Parser {
         };
 
         let asm = match token {
-            label if label.starts_with(':') => Assembly::Label(label),
+            label if label.starts_with(':') => Assembly::Label(&label[1..label.len()]),
             "mov" => Assembly::Instruction(instructions::Ops::Move(
                 self.get_register(),
                 self.get_data(),

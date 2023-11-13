@@ -1,8 +1,12 @@
+use std::collections::{HashMap, HashSet};
+
 use crate::instructions::{Assembly, Data, Ops, Register};
 
+#[derive(Debug)]
 pub struct Linker {
     m_code: Vec<u16>,
     ops: Vec<Assembly>,
+    label_addr: HashMap<&'static str, i32>,
 }
 
 impl Linker {
@@ -10,6 +14,7 @@ impl Linker {
         Self {
             m_code: Vec::new(),
             ops: asm,
+            label_addr: HashMap::new(),
         }
     }
 
@@ -69,7 +74,6 @@ impl Linker {
 
         let int = match data {
             Data::Int(literal) => [
-                
                 6,
                 Self::get_register_code(reg),
                 (literal >> 4) as u8,
@@ -120,5 +124,20 @@ impl Linker {
         }
 
         code
+    }
+
+    pub fn set_up_labels(&mut self) {
+        let mut lables = HashMap::new();
+        let mut addr = 0;
+        for i in self.ops.iter() {
+            if let Assembly::Label(label) = *i {
+                if lables.contains_key(label) {
+                    panic!("Duplicate Label found");
+                }
+                lables.insert(label, addr);
+            }
+            addr += 4;
+        }
+        self.label_addr = lables;
     }
 }

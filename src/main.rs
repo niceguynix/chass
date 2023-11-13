@@ -34,8 +34,11 @@ fn main() {
     // println!("{:#?}", p);
 
     let mut l = Linker::new(p.ops);
+    l.set_up_labels();
     l.link();
     let c = l.get_code();
+
+    println!("{:?}", l);
 
     fs::write("./test.rom", c).expect("Writing unsucessful");
 }
