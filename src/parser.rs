@@ -112,7 +112,7 @@ impl Parser {
         }
 
         if let Some(literal) = self.to_literal(token) {
-            return Data::Int(literal);
+            return Data::Int(literal as u16);
         }
 
         panic!("Not a valid register or literal");

@@ -24,7 +24,7 @@ pub enum Register {
 #[derive(Debug)]
 pub enum Data {
     Reg(Register),
-    Int(u8),
+    Int(u16),
 }
 
 #[derive(Debug)]

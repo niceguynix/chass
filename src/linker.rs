@@ -25,10 +25,20 @@ impl Linker {
     fn covert_to_code(asm: &Ops) -> u16 {
         let c = match asm {
             Ops::Move(reg, data) => Self::encode_move(reg, data),
+            Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, l),
             _ => panic!("??"),
         };
 
         Self::convert(c)
+    }
+
+    fn encode_draw(r1: &Register, r2: &Register, i: &u8) -> [u8; 4] {
+        [
+            0xD,
+            Self::get_register_code(r1),
+            Self::get_register_code(r2),
+            *i,
+        ]
     }
 
     fn convert(arr: [u8; 4]) -> u16 {
@@ -40,17 +50,30 @@ impl Linker {
         n |= arr[2] as u16;
         n <<= 4;
         n |= arr[3] as u16;
-        println!("{:?}", n);
         n
     }
 
     fn encode_move(reg: &Register, data: &Data) -> [u8; 4] {
+        match (reg, data) {
+            (Register::I, Data::Int(i)) => {
+                let x = [
+                    0xA,
+                    ((i & 0xF00) >> 8) as u8,
+                    ((i & 0xF0) >> 4) as u8,
+                    (i & 0xF) as u8,
+                ];
+                return x;
+            }
+            _ => (),
+        };
+
         let int = match data {
             Data::Int(literal) => [
+                
                 6,
                 Self::get_register_code(reg),
-                literal << 4,
-                literal & 0x000F,
+                (literal >> 4) as u8,
+                (literal & 0xF) as u8,
             ],
             Data::Reg(reg2) => [
                 8,
@@ -91,6 +114,7 @@ impl Linker {
             let mut fh = t & 0xFF00;
             fh >>= 8;
             let t = i & 0x00FF;
+            println!("{:0x?}", i);
             code.push(fh as u8);
             code.push((i & 0xFF) as u8);
         }
