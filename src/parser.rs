@@ -64,6 +64,7 @@ impl Parser {
             "add" => {
                 Assembly::Instruction(instructions::Ops::Add(self.get_register(), self.get_data()))
             }
+            "se"=>Assembly::Instruction(instructions::Ops::SkipIfEqual(self.get_register(), self.get_data())),
             _ => panic!("unrecogninzed instruction"),
         };
 

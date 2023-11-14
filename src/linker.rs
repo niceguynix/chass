@@ -34,10 +34,19 @@ impl Linker {
             Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, l),
             Ops::Jump(label) => self.encode_jump(label),
             Ops::Add(reg, data) => Self::encode_add(reg,data),
+            Ops::SkipIfEqual(reg, data)=>Self::encode_skip_if_eq(reg,data),
             _ => panic!("??"),
         };
 
         Self::convert(c)
+    }
+
+    fn encode_skip_if_eq(reg:&Register,data:&Data)->[u8;4]{
+        match data{
+            Data::Int(l)=>[3,Self::get_register_code(reg),((l& 0xF0) >> 4) as u8,
+            (l & 0xF) as u8],
+            Data::Reg(r2)=>[5,Self::get_register_code(reg),Self::get_register_code(r2),0]
+        }
     }
 
     fn encode_add(reg:&Register, data:&Data) -> [u8; 4] {
