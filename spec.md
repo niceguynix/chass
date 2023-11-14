@@ -18,3 +18,5 @@ mov - Specify data to be loaded into a register can be an literal or from anothe
 draw - sprite to be drawn.
 
 jump - jump to the specified address
+
+add - add and save the reg in the same register
