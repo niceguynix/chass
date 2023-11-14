@@ -1,7 +1,7 @@
 use crate::instructions::{Assembly, Data, Ops, Register};
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
-const start_addr: i32 = 0x200;
+const START_ADDR: i32 = 0x200;
 
 #[derive(Debug)]
 pub struct Linker {
@@ -33,37 +33,49 @@ impl Linker {
             Ops::Move(reg, data) => Self::encode_move(reg, data),
             Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, l),
             Ops::Jump(label) => self.encode_jump(label),
-            Ops::Add(reg, data) => Self::encode_add(reg,data),
-            Ops::SkipIfEqual(reg, data)=>Self::encode_skip_if_eq(reg,data),
-            Ops::ClearScreen=>[0,0,0xE,0],
-            _ => panic!("??"),
+            Ops::Add(reg, data) => Self::encode_add(reg, data),
+            Ops::SkipIfEqual(reg, data) => Self::encode_skip_if_eq(reg, data),
+            Ops::ClearScreen => [0, 0, 0xE, 0],
         };
 
         Self::convert(c)
     }
 
-    fn encode_skip_if_eq(reg:&Register,data:&Data)->[u8;4]{
-        match data{
-            Data::Int(l)=>[3,Self::get_register_code(reg),((l& 0xF0) >> 4) as u8,
-            (l & 0xF) as u8],
-            Data::Reg(r2)=>[5,Self::get_register_code(reg),Self::get_register_code(r2),0]
+    fn encode_skip_if_eq(reg: &Register, data: &Data) -> [u8; 4] {
+        match data {
+            Data::Int(l) => [
+                3,
+                Self::get_register_code(reg),
+                ((l & 0xF0) >> 4) as u8,
+                (l & 0xF) as u8,
+            ],
+            Data::Reg(r2) => [
+                5,
+                Self::get_register_code(reg),
+                Self::get_register_code(r2),
+                0,
+            ],
         }
     }
 
-    fn encode_add(reg:&Register, data:&Data) -> [u8; 4] {
-
-        if let (Register::I,Data::Reg(r2))=(reg,data){
-            return [0xF,Self::get_register_code(r2),1,0xE];
+    fn encode_add(reg: &Register, data: &Data) -> [u8; 4] {
+        if let (Register::I, Data::Reg(r2)) = (reg, data) {
+            return [0xF, Self::get_register_code(r2), 1, 0xE];
         }
 
         match data {
             Data::Int(literal) => [
                 7,
-                Self::get_register_code(&reg),
+                Self::get_register_code(reg),
                 ((literal & 0xF0) >> 4) as u8,
                 (literal & 0xF) as u8,
             ],
-            Data::Reg(r)=>[8,Self::get_register_code(reg) ,Self::get_register_code(r),4]
+            Data::Reg(r) => [
+                8,
+                Self::get_register_code(reg),
+                Self::get_register_code(r),
+                4,
+            ],
         }
     }
 
@@ -88,7 +100,7 @@ impl Linker {
     }
 
     fn convert(arr: [u8; 4]) -> u16 {
-        let mut n = 0_u16;
+        let mut n;
         n = arr[0] as u16;
         n <<= 4;
         n |= arr[1] as u16;
@@ -113,7 +125,7 @@ impl Linker {
             _ => (),
         };
 
-        let int = match data {
+        match data {
             Data::Int(literal) => [
                 6,
                 Self::get_register_code(reg),
@@ -126,8 +138,7 @@ impl Linker {
                 Self::get_register_code(reg2),
                 0,
             ],
-        };
-        int
+        }
     }
 
     fn get_register_code(reg: &Register) -> u8 {
@@ -155,10 +166,10 @@ impl Linker {
     pub fn get_code(&self) -> Vec<u8> {
         let mut code = Vec::new();
         for i in self.m_code.iter() {
-            let mut t = i.clone();
+            let t = *i;
             let mut fh = t & 0xFF00;
             fh >>= 8;
-            let t = i & 0x00FF;
+            let _t = i & 0x00FF;
             println!("{:0x?}", i);
             code.push(fh as u8);
             code.push((i & 0xFF) as u8);
@@ -175,7 +186,7 @@ impl Linker {
                 if lables.contains_key(label) {
                     panic!("Duplicate Label found");
                 }
-                lables.insert(label, start_addr + addr);
+                lables.insert(label, START_ADDR + addr);
             } else {
                 addr += 2;
             }
