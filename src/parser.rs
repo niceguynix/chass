@@ -1,4 +1,4 @@
-use crate::instructions::{self, Assembly, Data, Register};
+use crate::instructions::{self, Assembly, Data, Register, Ops};
 
 #[derive(Debug)]
 pub struct Parser {
@@ -65,6 +65,7 @@ impl Parser {
                 Assembly::Instruction(instructions::Ops::Add(self.get_register(), self.get_data()))
             }
             "se"=>Assembly::Instruction(instructions::Ops::SkipIfEqual(self.get_register(), self.get_data())),
+            "clr"=>Assembly::Instruction(Ops::ClearScreen),
             _ => panic!("unrecogninzed instruction"),
         };
 

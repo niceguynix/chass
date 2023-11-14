@@ -33,7 +33,8 @@ pub enum Ops {
     Draw(Register, Register, u8),
     Jump(&'static str),
     Add(Register, Data),
-    SkipIfEqual(Register,Data)
+    SkipIfEqual(Register,Data),
+    ClearScreen,
 }
 
 #[derive(Debug)]

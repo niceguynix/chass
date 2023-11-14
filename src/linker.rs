@@ -35,6 +35,7 @@ impl Linker {
             Ops::Jump(label) => self.encode_jump(label),
             Ops::Add(reg, data) => Self::encode_add(reg,data),
             Ops::SkipIfEqual(reg, data)=>Self::encode_skip_if_eq(reg,data),
+            Ops::ClearScreen=>[0,0,0xE,0],
             _ => panic!("??"),
         };
 
