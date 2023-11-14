@@ -21,4 +21,6 @@ jump - jump to the specified address
 
 add - add and save the reg in the same register
 
+se - skips the next instruction if the the values are equal
+
 clr - clears the screen
