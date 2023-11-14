@@ -20,3 +20,5 @@ draw - sprite to be drawn.
 jump - jump to the specified address
 
 add - add and save the reg in the same register
+
+clr - clears the screen
