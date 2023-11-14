@@ -33,10 +33,28 @@ impl Linker {
             Ops::Move(reg, data) => Self::encode_move(reg, data),
             Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, l),
             Ops::Jump(label) => self.encode_jump(label),
+            Ops::Add(reg, data) => Self::encode_add(reg,data),
             _ => panic!("??"),
         };
 
         Self::convert(c)
+    }
+
+    fn encode_add(reg:&Register, data:&Data) -> [u8; 4] {
+
+        if let (Register::I,Data::Reg(r2))=(reg,data){
+            return [0xF,Self::get_register_code(r2),1,0xE];
+        }
+
+        match data {
+            Data::Int(literal) => [
+                7,
+                Self::get_register_code(&reg),
+                ((literal & 0xF0) >> 4) as u8,
+                (literal & 0xF) as u8,
+            ],
+            Data::Reg(r)=>[8,Self::get_register_code(reg) ,Self::get_register_code(r),4]
+        }
     }
 
     fn encode_jump(&self, label: &str) -> [u8; 4] {
@@ -148,7 +166,7 @@ impl Linker {
                     panic!("Duplicate Label found");
                 }
                 lables.insert(label, start_addr + addr);
-            }else{
+            } else {
                 addr += 2;
             }
         }

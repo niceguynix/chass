@@ -61,7 +61,9 @@ impl Parser {
                 self.get_literal(),
             )),
             "jump" => Assembly::Instruction(instructions::Ops::Jump(self.get_label())),
-
+            "add" => {
+                Assembly::Instruction(instructions::Ops::Add(self.get_register(), self.get_data()))
+            }
             _ => panic!("unrecogninzed instruction"),
         };
 
