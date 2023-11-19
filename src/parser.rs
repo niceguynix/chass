@@ -69,7 +69,7 @@ impl Parser {
                 self.get_data(),
             )),
             "clr" => Assembly::Instruction(Ops::ClearScreen),
-            "ldfadr"=>Assembly::Instruction(Ops::LoadFontAddress(self.get_register())),
+            "ldfadr" => Assembly::Instruction(Ops::LoadFontAddress(self.get_register())),
             _ => panic!("unrecogninzed instruction"),
         };
 
