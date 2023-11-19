@@ -35,6 +35,7 @@ pub enum Ops {
     Add(Register, Data),
     SkipIfEqual(Register, Data),
     ClearScreen,
+    LoadFontAddress(Register),
 }
 
 #[derive(Debug)]

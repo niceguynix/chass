@@ -24,3 +24,5 @@ add - add and save the reg in the same register
 se - skips the next instruction if the the values are equal
 
 clr - clears the screen
+
+ldfadr - Loads the font address of character specified in register

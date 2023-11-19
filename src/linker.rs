@@ -36,9 +36,14 @@ impl Linker {
             Ops::Add(reg, data) => Self::encode_add(reg, data),
             Ops::SkipIfEqual(reg, data) => Self::encode_skip_if_eq(reg, data),
             Ops::ClearScreen => [0, 0, 0xE, 0],
+            Ops::LoadFontAddress(reg)=>Self::encode_load_font_address(reg),
         };
 
         Self::convert(c)
+    }
+
+    fn encode_load_font_address(reg:&Register)->[u8;4]{
+        [0xF,Self::get_register_code(reg),2,9]
     }
 
     fn encode_skip_if_eq(reg: &Register, data: &Data) -> [u8; 4] {
