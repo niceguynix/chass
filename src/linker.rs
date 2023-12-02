@@ -40,9 +40,14 @@ impl Linker {
             Ops::Call(d) => Self::encode_call(self, *d),
             Ops::Rand(reg, literal) => Self::encode_rand(reg, literal),
             Ops::SkipIfKeyNotPress(reg) => Self::encode_skip_if_key_not_pressed(reg),
+            Ops::And(r1,r2)=>Self::encode_and(r1, r2)
         };
 
         Self::convert(c)
+    }
+
+    fn encode_and(reg1:&Register,reg2:&Register)->[u8;4]{
+        [8,Self::get_register_code(reg1),Self::get_register_code(reg2),2]
     }
 
     fn encode_skip_if_key_not_pressed(reg: &Register) -> [u8; 4] {
