@@ -29,6 +29,7 @@ impl Linker {
     }
 
     fn covert_to_code(&self, asm: &Ops) -> u16 {
+        println!("{asm:?}");
         let c = match asm {
             Ops::Move(reg, data) => Self::encode_move(reg, data),
             Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, &(*l as u8)),
@@ -186,8 +187,18 @@ impl Linker {
                 ];
                 return x;
             }
+            (Register::Dt,Data::Reg(reg))=>{
+                return [0xF,Self::get_register_code(reg),1,5];
+            },
+            (Register::St,Data::Reg(reg))=>{
+                return [0xF,Self::get_register_code(reg),1,8];
+            }
             _ => (),
         };
+
+        if let Data::Reg(Register::Dt)=data{
+            return [0xF,Self::get_register_code(reg),0,7];
+        }
 
         match data {
             Data::Int(literal) => [
@@ -196,6 +207,7 @@ impl Linker {
                 (literal >> 4) as u8,
                 (literal & 0xF) as u8,
             ],
+
             Data::Reg(reg2) => [
                 8,
                 Self::get_register_code(reg),
@@ -206,6 +218,7 @@ impl Linker {
     }
 
     fn get_register_code(reg: &Register) -> u8 {
+        println!("{reg:?}");
         match reg {
             Register::V0 => 0,
             Register::V1 => 1,

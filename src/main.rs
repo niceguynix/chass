@@ -29,9 +29,9 @@ fn main() {
     //     println!("{}", token);
     // }
 
-    println!("Afer");
+    // println!("Afer");
     p.load_instructions();
-    println!("{:#?}", p);
+    // println!("{:#?}", p);
 
     let mut l = Linker::new(p.ops);
     l.set_up_labels();
