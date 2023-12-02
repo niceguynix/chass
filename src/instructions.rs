@@ -43,6 +43,7 @@ pub enum Ops {
     SkipIfNotEqual(Register,Data),
     Sub(Register,Register),
     Bcd(Register),
+    Store(Register),
 }
 
 #[derive(Debug)]
