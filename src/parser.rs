@@ -87,8 +87,10 @@ impl Parser {
     }
 
     pub fn load_instructions(&mut self) {
+        let mut line=1;
         while let Some(instruction) = self.get_instrution() {
-            println!("{instruction:?}");
+            println!("line:{line} {instruction:?}");
+            line+=1;
             self.ops.push(instruction);
         }
     }
