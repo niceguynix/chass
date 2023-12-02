@@ -44,6 +44,7 @@ pub enum Ops {
     Sub(Register,Register),
     Bcd(Register),
     Store(Register),
+    Return
 }
 
 #[derive(Debug)]

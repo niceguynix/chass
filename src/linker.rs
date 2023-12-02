@@ -44,10 +44,15 @@ impl Linker {
             Ops::SkipIfNotEqual(reg, data) => Self::encode_skip_if_not_equal(reg, data),
             Ops::Sub(reg1, reg2)=>Self::encode_sub(reg1, reg2),
             Ops::Bcd(reg) => Self::encode_bcd(reg),
-            Ops::Store(reg) => Self::encode_store(reg)
+            Ops::Store(reg) => Self::encode_store(reg),
+            Ops::Return=>Self::encode_return(),
         };
 
         Self::convert(c)
+    }
+
+    fn encode_return()->[u8;4]{
+        [0,0,0xE,0xE]
     }
 
     fn encode_store(reg:&Register)->[u8;4]{
