@@ -42,10 +42,15 @@ impl Linker {
             Ops::SkipIfKeyNotPress(reg) => Self::encode_skip_if_key_not_pressed(reg),
             Ops::And(r1,r2)=>Self::encode_and(r1, r2),
             Ops::SkipIfNotEqual(reg, data) => Self::encode_skip_if_not_equal(reg, data),
-            Ops::Sub(reg1, reg2)=>Self::encode_sub(reg1, reg2)
+            Ops::Sub(reg1, reg2)=>Self::encode_sub(reg1, reg2),
+            Ops::Bcd(reg) => Self::encode_bcd(reg)
         };
 
         Self::convert(c)
+    }
+
+    fn encode_bcd(reg:&Register)->[u8;4]{
+        [0xF,Self::get_register_code(reg),3,3]
     }
 
     fn encode_sub(reg1:&Register,reg2:&Register)->[u8;4]{

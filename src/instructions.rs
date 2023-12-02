@@ -41,7 +41,8 @@ pub enum Ops {
     SkipIfKeyNotPress(Register),
     And(Register,Register),
     SkipIfNotEqual(Register,Data),
-    Sub(Register,Register)
+    Sub(Register,Register),
+    Bcd(Register),
 }
 
 #[derive(Debug)]

@@ -78,6 +78,7 @@ impl Parser {
             "and" => Assembly::Instruction(Ops::And(self.get_register(), self.get_register())),
             "sne" => Assembly::Instruction(Ops::SkipIfNotEqual(self.get_register(), self.get_data())),
             "sub" => Assembly::Instruction(Ops::Sub(self.get_register(), self.get_register())),
+            "bcd" => Assembly::Instruction(Ops::Bcd(self.get_register())),
             _ => panic!("unrecogninzed instruction"),
         };
 
