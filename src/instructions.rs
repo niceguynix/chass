@@ -40,7 +40,8 @@ pub enum Ops {
     Rand(Register, u8),
     SkipIfKeyNotPress(Register),
     And(Register,Register),
-    SkipIfNotEqual(Register,Data)
+    SkipIfNotEqual(Register,Data),
+    Sub(Register,Register)
 }
 
 #[derive(Debug)]

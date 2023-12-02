@@ -77,6 +77,7 @@ impl Parser {
             "sknp" => Assembly::Instruction(Ops::SkipIfKeyNotPress(self.get_register())),
             "and" => Assembly::Instruction(Ops::And(self.get_register(), self.get_register())),
             "sne" => Assembly::Instruction(Ops::SkipIfNotEqual(self.get_register(), self.get_data())),
+            "sub" => Assembly::Instruction(Ops::Sub(self.get_register(), self.get_register())),
             _ => panic!("unrecogninzed instruction"),
         };
 

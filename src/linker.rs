@@ -41,10 +41,15 @@ impl Linker {
             Ops::Rand(reg, literal) => Self::encode_rand(reg, literal),
             Ops::SkipIfKeyNotPress(reg) => Self::encode_skip_if_key_not_pressed(reg),
             Ops::And(r1,r2)=>Self::encode_and(r1, r2),
-            Ops::SkipIfNotEqual(reg, data) => Self::encode_skip_if_not_equal(reg, data)
+            Ops::SkipIfNotEqual(reg, data) => Self::encode_skip_if_not_equal(reg, data),
+            Ops::Sub(reg1, reg2)=>Self::encode_sub(reg1, reg2)
         };
 
         Self::convert(c)
+    }
+
+    fn encode_sub(reg1:&Register,reg2:&Register)->[u8;4]{
+        [8,Self::get_register_code(reg1),Self::get_register_code(reg2),5]
     }
 
     fn encode_skip_if_not_equal(reg:&Register,data:&Data)->[u8;4]{
