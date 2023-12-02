@@ -31,20 +31,25 @@ impl Linker {
     fn covert_to_code(&self, asm: &Ops) -> u16 {
         let c = match asm {
             Ops::Move(reg, data) => Self::encode_move(reg, data),
-            Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, &(*l as u8) ),
+            Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, &(*l as u8)),
             Ops::Jump(label) => self.encode_jump(label),
             Ops::Add(reg, data) => Self::encode_add(reg, data),
             Ops::SkipIfEqual(reg, data) => Self::encode_skip_if_eq(reg, data),
             Ops::ClearScreen => [0, 0, 0xE, 0],
             Ops::LoadFontAddress(reg) => Self::encode_load_font_address(reg),
-            Ops::Call(d)=>Self::encode_call(d),
+            Ops::Call(d) => Self::encode_call(d),
         };
 
         Self::convert(c)
     }
 
-    fn encode_call(d:&u16)->[u8;4]{
-        [2,((d&0xF00)>>8) as u8,((d&0xF0)>>4) as u8,(d&0xF) as u8]
+    fn encode_call(d: &u16) -> [u8; 4] {
+        [
+            2,
+            ((d & 0xF00) >> 8) as u8,
+            ((d & 0xF0) >> 4) as u8,
+            (d & 0xF) as u8,
+        ]
     }
 
     fn encode_load_font_address(reg: &Register) -> [u8; 4] {
