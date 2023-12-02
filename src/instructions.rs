@@ -37,6 +37,7 @@ pub enum Ops {
     ClearScreen,
     LoadFontAddress(Register),
     Call(&'static str),
+    Rand(Register,u8)
 }
 
 #[derive(Debug)]

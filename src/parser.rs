@@ -71,6 +71,7 @@ impl Parser {
             "clr" => Assembly::Instruction(Ops::ClearScreen),
             "ldfadr" => Assembly::Instruction(Ops::LoadFontAddress(self.get_register())),
             "call" => Assembly::Instruction(Ops::Call(self.get_label())),
+            "getrand"=>Assembly::Instruction(Ops::Rand(self.get_register(), self.get_literal() as u8)),
             _ => panic!("unrecogninzed instruction"),
         };
 

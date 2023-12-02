@@ -38,9 +38,14 @@ impl Linker {
             Ops::ClearScreen => [0, 0, 0xE, 0],
             Ops::LoadFontAddress(reg) => Self::encode_load_font_address(reg),
             Ops::Call(d) => Self::encode_call(self,*d),
+            Ops::Rand(reg,literal )=>Self::encode_rand(reg,literal),
         };
 
         Self::convert(c)
+    }
+
+    fn encode_rand(reg:&Register,data:&u8)->[u8;4]{
+        [0xC,Self::get_register_code(reg),(data&0xF0)>>4,(data&0xF)]
     }
 
     fn encode_call(&self,d: &str) -> [u8; 4] {
