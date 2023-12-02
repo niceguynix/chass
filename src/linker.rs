@@ -39,9 +39,14 @@ impl Linker {
             Ops::LoadFontAddress(reg) => Self::encode_load_font_address(reg),
             Ops::Call(d) => Self::encode_call(self,*d),
             Ops::Rand(reg,literal )=>Self::encode_rand(reg,literal),
+            Ops::SkipIfKeyNotPress(reg)=>Self::encode_skip_if_key_not_pressed(reg)
         };
 
         Self::convert(c)
+    }
+
+    fn encode_skip_if_key_not_pressed(reg:&Register)->[u8;4]{
+        [0xE,Self::get_register_code(reg),0xA,1]
     }
 
     fn encode_rand(reg:&Register,data:&u8)->[u8;4]{

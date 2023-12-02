@@ -72,6 +72,7 @@ impl Parser {
             "ldfadr" => Assembly::Instruction(Ops::LoadFontAddress(self.get_register())),
             "call" => Assembly::Instruction(Ops::Call(self.get_label())),
             "getrand"=>Assembly::Instruction(Ops::Rand(self.get_register(), self.get_literal() as u8)),
+            "sknp"=>Assembly::Instruction(Ops::SkipIfKeyNotPress(self.get_register())),
             _ => panic!("unrecogninzed instruction"),
         };
 
