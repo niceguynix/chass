@@ -37,13 +37,15 @@ impl Linker {
             Ops::SkipIfEqual(reg, data) => Self::encode_skip_if_eq(reg, data),
             Ops::ClearScreen => [0, 0, 0xE, 0],
             Ops::LoadFontAddress(reg) => Self::encode_load_font_address(reg),
-            Ops::Call(d) => Self::encode_call(d),
+            Ops::Call(d) => Self::encode_call(self,*d),
         };
 
         Self::convert(c)
     }
 
-    fn encode_call(d: &u16) -> [u8; 4] {
+    fn encode_call(&self,d: &str) -> [u8; 4] {
+
+        let d =self.label_addr.get(d).expect("unexpected label found");
         [
             2,
             ((d & 0xF00) >> 8) as u8,

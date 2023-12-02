@@ -36,7 +36,7 @@ pub enum Ops {
     SkipIfEqual(Register, Data),
     ClearScreen,
     LoadFontAddress(Register),
-    Call(u16),
+    Call(&'static str),
 }
 
 #[derive(Debug)]
