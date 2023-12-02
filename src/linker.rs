@@ -31,7 +31,7 @@ impl Linker {
     fn covert_to_code(&self, asm: &Ops) -> u16 {
         let c = match asm {
             Ops::Move(reg, data) => Self::encode_move(reg, data),
-            Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, l),
+            Ops::Draw(r1, r2, l) => Self::encode_draw(r1, r2, &(*l as u8) ),
             Ops::Jump(label) => self.encode_jump(label),
             Ops::Add(reg, data) => Self::encode_add(reg, data),
             Ops::SkipIfEqual(reg, data) => Self::encode_skip_if_eq(reg, data),

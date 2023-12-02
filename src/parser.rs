@@ -86,6 +86,7 @@ impl Parser {
 
     pub fn load_instructions(&mut self) {
         while let Some(instruction) = self.get_instrution() {
+            println!("{instruction:?}");
             self.ops.push(instruction);
         }
     }
@@ -116,7 +117,7 @@ impl Parser {
         Some(register)
     }
 
-    fn to_literal(&self, token: &str) -> Option<u8> {
+    fn to_literal(&self, token: &str) -> Option<u16> {
         token.parse().ok()
     }
 
@@ -140,7 +141,7 @@ impl Parser {
         let token = self.get_next_token().expect("Needed a register");
         self.to_register(token).expect("Not a register")
     }
-    fn get_literal(&mut self) -> u8 {
+    fn get_literal(&mut self) -> u16 {
         let token = self.get_next_token().expect("Needed a integer");
         self.to_literal(token).expect("Not a integer")
     }

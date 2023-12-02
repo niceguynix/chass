@@ -30,7 +30,7 @@ pub enum Data {
 #[derive(Debug)]
 pub enum Ops {
     Move(Register, Data),
-    Draw(Register, Register, u8),
+    Draw(Register, Register, u16),
     Jump(&'static str),
     Add(Register, Data),
     SkipIfEqual(Register, Data),
