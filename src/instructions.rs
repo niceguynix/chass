@@ -37,8 +37,8 @@ pub enum Ops {
     ClearScreen,
     LoadFontAddress(Register),
     Call(&'static str),
-    Rand(Register,u8),
-    SkipIfKeyNotPress(Register)
+    Rand(Register, u8),
+    SkipIfKeyNotPress(Register),
 }
 
 #[derive(Debug)]

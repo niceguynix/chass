@@ -37,25 +37,29 @@ impl Linker {
             Ops::SkipIfEqual(reg, data) => Self::encode_skip_if_eq(reg, data),
             Ops::ClearScreen => [0, 0, 0xE, 0],
             Ops::LoadFontAddress(reg) => Self::encode_load_font_address(reg),
-            Ops::Call(d) => Self::encode_call(self,*d),
-            Ops::Rand(reg,literal )=>Self::encode_rand(reg,literal),
-            Ops::SkipIfKeyNotPress(reg)=>Self::encode_skip_if_key_not_pressed(reg)
+            Ops::Call(d) => Self::encode_call(self, *d),
+            Ops::Rand(reg, literal) => Self::encode_rand(reg, literal),
+            Ops::SkipIfKeyNotPress(reg) => Self::encode_skip_if_key_not_pressed(reg),
         };
 
         Self::convert(c)
     }
 
-    fn encode_skip_if_key_not_pressed(reg:&Register)->[u8;4]{
-        [0xE,Self::get_register_code(reg),0xA,1]
+    fn encode_skip_if_key_not_pressed(reg: &Register) -> [u8; 4] {
+        [0xE, Self::get_register_code(reg), 0xA, 1]
     }
 
-    fn encode_rand(reg:&Register,data:&u8)->[u8;4]{
-        [0xC,Self::get_register_code(reg),(data&0xF0)>>4,(data&0xF)]
+    fn encode_rand(reg: &Register, data: &u8) -> [u8; 4] {
+        [
+            0xC,
+            Self::get_register_code(reg),
+            (data & 0xF0) >> 4,
+            (data & 0xF),
+        ]
     }
 
-    fn encode_call(&self,d: &str) -> [u8; 4] {
-
-        let d =self.label_addr.get(d).expect("unexpected label found");
+    fn encode_call(&self, d: &str) -> [u8; 4] {
+        let d = self.label_addr.get(d).expect("unexpected label found");
         [
             2,
             ((d & 0xF00) >> 8) as u8,

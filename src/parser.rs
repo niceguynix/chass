@@ -71,8 +71,10 @@ impl Parser {
             "clr" => Assembly::Instruction(Ops::ClearScreen),
             "ldfadr" => Assembly::Instruction(Ops::LoadFontAddress(self.get_register())),
             "call" => Assembly::Instruction(Ops::Call(self.get_label())),
-            "getrand"=>Assembly::Instruction(Ops::Rand(self.get_register(), self.get_literal() as u8)),
-            "sknp"=>Assembly::Instruction(Ops::SkipIfKeyNotPress(self.get_register())),
+            "getrand" => {
+                Assembly::Instruction(Ops::Rand(self.get_register(), self.get_literal() as u8))
+            }
+            "sknp" => Assembly::Instruction(Ops::SkipIfKeyNotPress(self.get_register())),
             _ => panic!("unrecogninzed instruction"),
         };
 
@@ -88,10 +90,10 @@ impl Parser {
     }
 
     pub fn load_instructions(&mut self) {
-        let mut line=1;
+        let mut line = 1;
         while let Some(instruction) = self.get_instrution() {
             println!("line:{line} {instruction:?}");
-            line+=1;
+            line += 1;
             self.ops.push(instruction);
         }
     }
