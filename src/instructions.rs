@@ -39,7 +39,8 @@ pub enum Ops {
     Call(&'static str),
     Rand(Register, u8),
     SkipIfKeyNotPress(Register),
-    And(Register,Register)
+    And(Register,Register),
+    SkipIfNotEqual(Register,Data)
 }
 
 #[derive(Debug)]

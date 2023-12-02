@@ -40,10 +40,18 @@ impl Linker {
             Ops::Call(d) => Self::encode_call(self, *d),
             Ops::Rand(reg, literal) => Self::encode_rand(reg, literal),
             Ops::SkipIfKeyNotPress(reg) => Self::encode_skip_if_key_not_pressed(reg),
-            Ops::And(r1,r2)=>Self::encode_and(r1, r2)
+            Ops::And(r1,r2)=>Self::encode_and(r1, r2),
+            Ops::SkipIfNotEqual(reg, data) => Self::encode_skip_if_not_equal(reg, data)
         };
 
         Self::convert(c)
+    }
+
+    fn encode_skip_if_not_equal(reg:&Register,data:&Data)->[u8;4]{
+        match data{
+            Data::Int(i)=>[4,Self::get_register_code(reg),((i&0xF0)>>4)as u8,(i&0xF) as u8],
+            _=>unimplemented!()
+        }
     }
 
     fn encode_and(reg1:&Register,reg2:&Register)->[u8;4]{
