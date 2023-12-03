@@ -39,13 +39,13 @@ pub enum Ops {
     Call(&'static str),
     Rand(Register, u8),
     SkipIfKeyNotPress(Register),
-    And(Register,Register),
-    SkipIfNotEqual(Register,Data),
-    Sub(Register,Register),
+    And(Register, Register),
+    SkipIfNotEqual(Register, Data),
+    Sub(Register, Register),
     Bcd(Register),
     Store(Register),
     Return,
-    NoOp
+    NoOp,
 }
 
 #[derive(Debug)]

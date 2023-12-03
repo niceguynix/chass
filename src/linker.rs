@@ -41,43 +41,58 @@ impl Linker {
             Ops::Call(d) => Self::encode_call(self, *d),
             Ops::Rand(reg, literal) => Self::encode_rand(reg, literal),
             Ops::SkipIfKeyNotPress(reg) => Self::encode_skip_if_key_not_pressed(reg),
-            Ops::And(r1,r2)=>Self::encode_and(r1, r2),
+            Ops::And(r1, r2) => Self::encode_and(r1, r2),
             Ops::SkipIfNotEqual(reg, data) => Self::encode_skip_if_not_equal(reg, data),
-            Ops::Sub(reg1, reg2)=>Self::encode_sub(reg1, reg2),
+            Ops::Sub(reg1, reg2) => Self::encode_sub(reg1, reg2),
             Ops::Bcd(reg) => Self::encode_bcd(reg),
             Ops::Store(reg) => Self::encode_store(reg),
-            Ops::Return=>Self::encode_return(),
-            Ops::NoOp=>[0,0,0,0]
+            Ops::Return => Self::encode_return(),
+            Ops::NoOp => [0, 0, 0, 0],
         };
-    
+
         Self::convert(c)
     }
 
-    fn encode_return()->[u8;4]{
-        [0,0,0xE,0xE]
+    fn encode_return() -> [u8; 4] {
+        [0, 0, 0xE, 0xE]
     }
 
-    fn encode_store(reg:&Register)->[u8;4]{
-        [0xF,Self::get_register_code(reg),6,5]
+    fn encode_store(reg: &Register) -> [u8; 4] {
+        [0xF, Self::get_register_code(reg), 6, 5]
     }
 
-    fn encode_bcd(reg:&Register)->[u8;4]{
-        [0xF,Self::get_register_code(reg),3,3]
+    fn encode_bcd(reg: &Register) -> [u8; 4] {
+        [0xF, Self::get_register_code(reg), 3, 3]
     }
 
-    fn encode_sub(reg1:&Register,reg2:&Register)->[u8;4]{
-        [8,Self::get_register_code(reg1),Self::get_register_code(reg2),5]
+    fn encode_sub(reg1: &Register, reg2: &Register) -> [u8; 4] {
+        [
+            8,
+            Self::get_register_code(reg1),
+            Self::get_register_code(reg2),
+            5,
+        ]
     }
 
-    fn encode_skip_if_not_equal(reg:&Register,data:&Data)->[u8;4]{
-        match data{
-            Data::Int(i)=>[4,Self::get_register_code(reg),((i&0xF0)>>4)as u8,(i&0xF) as u8],
-            _=>unimplemented!()
+    fn encode_skip_if_not_equal(reg: &Register, data: &Data) -> [u8; 4] {
+        match data {
+            Data::Int(i) => [
+                4,
+                Self::get_register_code(reg),
+                ((i & 0xF0) >> 4) as u8,
+                (i & 0xF) as u8,
+            ],
+            _ => unimplemented!(),
         }
     }
 
-    fn encode_and(reg1:&Register,reg2:&Register)->[u8;4]{
-        [8,Self::get_register_code(reg1),Self::get_register_code(reg2),2]
+    fn encode_and(reg1: &Register, reg2: &Register) -> [u8; 4] {
+        [
+            8,
+            Self::get_register_code(reg1),
+            Self::get_register_code(reg2),
+            2,
+        ]
     }
 
     fn encode_skip_if_key_not_pressed(reg: &Register) -> [u8; 4] {
@@ -188,17 +203,17 @@ impl Linker {
                 ];
                 return x;
             }
-            (Register::Dt,Data::Reg(reg))=>{
-                return [0xF,Self::get_register_code(reg),1,5];
-            },
-            (Register::St,Data::Reg(reg))=>{
-                return [0xF,Self::get_register_code(reg),1,8];
+            (Register::Dt, Data::Reg(reg)) => {
+                return [0xF, Self::get_register_code(reg), 1, 5];
+            }
+            (Register::St, Data::Reg(reg)) => {
+                return [0xF, Self::get_register_code(reg), 1, 8];
             }
             _ => (),
         };
 
-        if let Data::Reg(Register::Dt)=data{
-            return [0xF,Self::get_register_code(reg),0,7];
+        if let Data::Reg(Register::Dt) = data {
+            return [0xF, Self::get_register_code(reg), 0, 7];
         }
 
         match data {

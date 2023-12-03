@@ -76,7 +76,9 @@ impl Parser {
             }
             "sknp" => Assembly::Instruction(Ops::SkipIfKeyNotPress(self.get_register())),
             "and" => Assembly::Instruction(Ops::And(self.get_register(), self.get_register())),
-            "sne" => Assembly::Instruction(Ops::SkipIfNotEqual(self.get_register(), self.get_data())),
+            "sne" => {
+                Assembly::Instruction(Ops::SkipIfNotEqual(self.get_register(), self.get_data()))
+            }
             "sub" => Assembly::Instruction(Ops::Sub(self.get_register(), self.get_register())),
             "bcd" => Assembly::Instruction(Ops::Bcd(self.get_register())),
             "store" => Assembly::Instruction(Ops::Store(self.get_register())),
