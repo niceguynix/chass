@@ -81,6 +81,7 @@ impl Parser {
             "bcd" => Assembly::Instruction(Ops::Bcd(self.get_register())),
             "store" => Assembly::Instruction(Ops::Store(self.get_register())),
             "ret" => Assembly::Instruction(Ops::Return),
+            "nop" => Assembly::Instruction(Ops::NoOp),
             _ => panic!("unrecogninzed instruction"),
         };
 

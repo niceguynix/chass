@@ -47,8 +47,9 @@ impl Linker {
             Ops::Bcd(reg) => Self::encode_bcd(reg),
             Ops::Store(reg) => Self::encode_store(reg),
             Ops::Return=>Self::encode_return(),
+            Ops::NoOp=>[0,0,0,0]
         };
-
+    
         Self::convert(c)
     }
 
@@ -234,8 +235,8 @@ impl Linker {
             Register::VB => 11,
             Register::VC => 12,
             Register::VD => 13,
-            Register::VE => 13,
-            Register::VF => 14,
+            Register::VE => 14,
+            Register::VF => 15,
             _ => panic!("cant"),
         }
     }
